@@ -1,24 +1,32 @@
 {
-  "name": "zapier-platform-example-app-minimal",
-  "version": "1.0.0",
+  "name": "app__nodejs_zapier-platform",
+  "version": "0.0.1",
   "description": "An example app for the Zapier platform.",
-  "repository": "zapier/zapier-platform-example-app-minimal",
-  "homepage": "https://zapier.com/",
-  "author": "Bryan Helmig <bryan@zapier.com>",
-  "license": "BSD-3-Clause",
+  "repository": "gordienkopeter/app__nodejs_zapier-platform",
+  "author": "Peter_V <gordienkopeter@gmail.com>",
   "main": "index.js",
   "scripts": {
-    "test": "node node_modules/mocha/bin/mocha --recursive"
+    "zapier-build": "rm -rf dist && node_modules/babel-cli/bin/babel.js src --out-dir dist",
+    "zapier-dev": "rm -rf dist && node_modules/babel-cli/bin/babel.js src --out-dir dist --watch",
+    "zapier-push": "npm run zapier-build && zapier push",
+    "test": "node node_modules/mocha/bin/mocha --recursive dist --compilers js:babel-core/register --require babel-polyfill"
   },
   "engines": {
     "node": "6.10.3",
     "npm": ">=3.10.10"
   },
   "dependencies": {
+    "babel-core": "^6.26.0",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-plugin-transform-regenerator": "^6.26.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
     "dotenv": "^5.0.0",
     "zapier-platform-core": "5.0.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-eslint": "^8.2.2",
     "mocha": "3.2.0",
     "should": "11.2.1"
   }

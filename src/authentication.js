@@ -1,27 +1,27 @@
-require('dotenv').config();
+import { config } from 'dotenv';
+
+config();
 
 const { API_NOTES_HOST, API_NOTES_PORT } = process.env;
 
-const test = async (z, bundle) => {
+const test = (z, bundle) => {
   const { apiKey } = bundle.authData || {};
   const url = `${API_NOTES_HOST}:${API_NOTES_PORT}/api/auth/verify`;
   const headers = { Authorization: `ApiKey ${apiKey}` };
-  const response = await z.request({ url, headers });
 
-  if (response.status === 401) {
+  return z.request({ url, headers }).catch(() => {
     throw new Error('The API Key you supplied is invalid');
-  }
-
-  return response;
+  });
 };
 
-const authentication = {
+export const authentication = {
   type: 'custom',
   test,
   fields: [{ key: 'apiKey', label: 'API Key', required: true, type: 'string' }],
+  connectionLabel: '{{bundle.authData.apiKey}}',
 };
 
-const addApiKeyToHeader = (request, z, bundle) => {
+export const addApiKeyToHeader = (request, z, bundle) => {
   const { apiKey } = bundle.authData || {};
 
   if (apiKey) {
@@ -30,5 +30,3 @@ const addApiKeyToHeader = (request, z, bundle) => {
 
   return request;
 };
-
-module.exports = authentication;
